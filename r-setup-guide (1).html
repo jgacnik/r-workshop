@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Installing R & RStudio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0e1117;
+    --surface: #161b27;
+    --surface2: #1e2535;
+    --border: #2a3349;
+    --accent: #4f8ef7;
+    --accent2: #7ee8a2;
+    --accent3: #f7c948;
+    --text: #e8edf5;
+    --muted: #7b8cad;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+    max-width: 760px;
+    margin: 0 auto;
+  }
+
+  header {
+    padding: 48px 40px 32px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #0e1117 0%, #111827 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(79,142,247,0.12) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+  }
+
+  .r-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #2166ac, #4f8ef7);
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(79,142,247,0.3);
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+    line-height: 1.25;
+  }
+
+  .logo-row {
+    flex-wrap: wrap;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 300;
+    margin-top: 2px;
+  }
+
+  .intro {
+    background: var(--surface2);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin: 24px 0 0;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .intro strong { color: var(--text); font-weight: 500; }
+
+  .steps-container {
+    padding: 32px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .step {
+    display: flex;
+    gap: 20px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .step:nth-child(1) { animation-delay: 0.05s; }
+  .step:nth-child(2) { animation-delay: 0.1s; }
+  .step:nth-child(3) { animation-delay: 0.15s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    color: var(--accent);
+    margin-top: 2px;
+  }
+
+  .step-body { flex: 1; }
+
+  .step-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .step-desc {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 14px;
+    font-weight: 300;
+  }
+
+  .os-tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .os-tab {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .os-tab:hover { border-color: var(--accent); color: var(--accent); }
+  .os-tab.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .os-content { display: none; }
+  .os-content.active { display: block; }
+
+  .instruction-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px;
+  }
+
+  .instruction-card ol {
+    padding-left: 18px;
+    color: var(--muted);
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .instruction-card li { font-weight: 300; }
+  .instruction-card li strong { color: var(--text); font-weight: 500; }
+
+  .link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    background: rgba(79,142,247,0.1);
+    border: 1px solid rgba(79,142,247,0.3);
+    color: var(--accent);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .link-btn:hover {
+    background: rgba(79,142,247,0.2);
+    border-color: var(--accent);
+  }
+
+  .code-block {
+    background: #0a0d14;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-top: 12px;
+    position: relative;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: var(--accent2);
+  }
+
+  .copy-btn {
+    position: absolute;
+    top: 8px; right: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 5px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .copy-btn:hover { color: var(--text); border-color: var(--accent); }
+  .copy-btn.copied { color: var(--accent2); border-color: var(--accent2); }
+
+  .tip {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    background: rgba(248,201,72,0.07);
+    border: 1px solid rgba(248,201,72,0.2);
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #c4a84a;
+  }
+
+  .tip-icon { flex-shrink: 0; font-size: 16px; margin-top: -1px; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0 40px;
+  }
+
+  footer {
+    padding: 20px 40px 40px;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 300;
+  }
+
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 520px) {
+    header, .steps-container, footer { padding-left: 20px; padding-right: 20px; }
+    .divider { margin: 0 20px; }
+    h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-row">
+    <div class="r-badge">R</div>
+    <div>
+      <h1>Getting Started with R</h1>
+      <div class="subtitle">A step-by-step setup guide for workshop participants</div>
+    </div>
+  </div>
+  <div class="intro">
+    <strong>What you'll install:</strong> R (the language) → RStudio (the editor) → tidyverse (package). Follow all three steps in order.
+  </div>
+</header>
+
+<div class="steps-container">
+
+  <!-- STEP 1: R -->
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-body">
+      <div class="step-title">Install R</div>
+      <div class="step-desc">R is the statistical computing engine. Install this first — RStudio won't work without it.</div>
+
+      <div class="os-tabs">
+        <button class="os-tab active" onclick="switchTab('r', 'windows', this)">Windows</button>
+        <button class="os-tab" onclick="switchTab('r', 'mac', this)">macOS</button>
+        <button class="os-tab" onclick="switchTab('r', 'linux', this)">Linux</button>
+      </div>
+
+      <div class="instruction-card">
+        <div id="r-windows" class="os-content active">
+          <ol>
+            <li>Go to <a class="link-btn" href="https://cran.r-project.org/bin/windows/base/" target="_blank">↗ CRAN Windows</a></li>
+            <li>Download the <strong>.exe</strong> installer</li>
+            <li>Run it and follow the prompts — defaults are fine</li>
+          </ol>
+        </div>
+        <div id="r-mac" class="os-content">
+          <ol>
+            <li>Go to <a class="link-btn" href="https://cran.r-project.org/bin/macosx/" target="_blank">↗ CRAN macOS</a></li>
+            <li>Download the latest <strong>.pkg</strong> file</li>
+            <li>Double-click to install</li>
+            <li>Optionally install <a class="link-btn" href="https://www.xquartz.org/" target="_blank">↗ XQuartz</a> (some packages need it)</li>
+          </ol>
+        </div>
+        <div id="r-linux" class="os-content">
+          <ol>
+            <li>Visit <a class="link-btn" href="https://cloud.r-project.org/bin/linux" target="_blank">↗ CRAN Linux</a> and pick your distro</li>
+            <li><strong>Debian/Ubuntu:</strong> <code>sudo apt-get install r-base</code></li>
+            <li><strong>Fedora:</strong> <code>sudo yum install R</code></li>
+            <li>Make sure you get <strong>R 3.2 or newer</strong></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2: RStudio -->
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-body">
+      <div class="step-title">Install RStudio</div>
+      <div class="step-desc">RStudio is a friendly editor that makes working with R much easier. You must install R first (Step 1).</div>
+
+      <div class="os-tabs">
+        <button class="os-tab active" onclick="switchTab('rs', 'windows', this)">Windows</button>
+        <button class="os-tab" onclick="switchTab('rs', 'mac', this)">macOS</button>
+        <button class="os-tab" onclick="switchTab('rs', 'linux', this)">Linux</button>
+      </div>
+
+      <div class="instruction-card">
+        <div id="rs-windows" class="os-content active">
+          <ol>
+            <li>Go to <a class="link-btn" href="https://posit.co/download/rstudio-desktop/#download" target="_blank">↗ RStudio Downloads</a></li>
+            <li>Under <em>Installers</em>, select the <strong>Windows</strong> version</li>
+            <li>Double-click the downloaded file to install</li>
+            <li>Open RStudio — if it launches without errors, you're good!</li>
+          </ol>
+        </div>
+        <div id="rs-mac" class="os-content">
+          <ol>
+            <li>Go to <a class="link-btn" href="https://posit.co/download/rstudio-desktop/#download" target="_blank">↗ RStudio Downloads</a></li>
+            <li>Under <em>Installers</em>, select the <strong>macOS</strong> version</li>
+            <li>Double-click the <strong>.dmg</strong> and drag RStudio to Applications</li>
+            <li>Open RStudio — if it launches without errors, you're good!</li>
+          </ol>
+        </div>
+        <div id="rs-linux" class="os-content">
+          <ol>
+            <li>Go to <a class="link-btn" href="https://posit.co/download/rstudio-desktop/#download" target="_blank">↗ RStudio Downloads</a></li>
+            <li>Select the installer matching your distro (e.g. <strong>.deb</strong> for Ubuntu)</li>
+            <li>Debian/Ubuntu: <code>sudo dpkg -i rstudio-x.y.z-amd64.deb</code></li>
+            <li>Open RStudio to confirm it works</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="tip">
+        <span class="tip-icon">💡</span>
+        <span>Already have R and RStudio? In RStudio go to <strong>Help → Check for updates</strong> to make sure you're on a recent version.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3: Packages -->
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-body">
+      <div class="step-title">Install the packages</div>
+      <div class="step-desc">Open RStudio, click in the <strong>Console</strong> panel at the bottom, and run this command. It will take a few minutes.</div>
+
+      <div class="code-block">
+        <button class="copy-btn" onclick="copyCode(this)">copy</button>
+        install.packages("tidyverse")
+      </div>
+
+      <div class="tip">
+        <span class="tip-icon">✅</span>
+        <span>If you see <strong style="color:#7ee8a2">no error messages</strong> after the command finishes, you're all set for the workshop!</span>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<hr class="divider">
+
+<footer>
+  Questions? Ask a helper before the session starts. &nbsp;·&nbsp; Packages from <a href="https://cran.r-project.org" target="_blank">CRAN</a> &nbsp;·&nbsp; RStudio by <a href="https://posit.co" target="_blank">Posit</a>
+</footer>
+
+<script>
+  function switchTab(prefix, os, btn) {
+    const card = btn.closest('.step-body');
+    card.querySelectorAll('.os-tab').forEach(t => t.classList.remove('active'));
+    card.querySelectorAll('.os-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    const target = document.getElementById(prefix + '-' + os);
+    if (target) target.classList.add('active');
+  }
+
+  function copyCode(btn) {
+    const code = btn.parentElement.innerText.replace('copy\n', '').replace('copied!\n', '').trim();
+    navigator.clipboard.writeText(code).then(() => {
+      btn.textContent = 'copied!';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 1800);
+    });
+  }
+</script>
+</body>
+</html>
